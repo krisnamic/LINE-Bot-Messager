@@ -109,16 +109,18 @@ $app->get('/multicast', function($req, $response) use ($bot)
     $result = $bot->multicast($userList, $textMessageBuilder);
  
  
-    $response->getBody()->write("Halooooo ada oranggggg????");
+    $response->getBody()->write("Jangan rindu. Karena rindu itu berat, biar aku saja.");
     return $response
         ->withHeader('Content-Type', 'application/json')
         ->withStatus($result->getHTTPStatus());
 });
 
-$app->get('/profile/{userId}', function ($req, $response, $args) use ($bot) {
+$app->get('/profile', function ($req, $response) use ($bot)
+{
     // get user profile
-    $userId = $args['userId'];
+    $userId = 'U39fddbb54061b4edab80c28ff055858a';
     $result = $bot->getProfile($userId);
+ 
     $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
     return $response
         ->withHeader('Content-Type', 'application/json')
