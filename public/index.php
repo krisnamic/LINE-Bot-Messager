@@ -29,16 +29,8 @@ $app = AppFactory::create();
 $app->setBasePath("/public");
  
 $app->get('/', function (Request $request, Response $response, $args) {
-    $userId = $event['source']['userId'];
-    $getprofile = $bot->getProfile($userId);
-    $profile = $getprofile->getJSONDecodedBody();
-    $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, saya adalah aplikasi belanja online makanan langsung ke tempat tinggal anda. Gunakan saya sebaik mungkin ya.\n\nJangan lupa setiap hari senin dan rabu akan ada promo, lho! Dan akan ada hadiah menarik bagi kamu yang paling banyak menyebarkan aplikasi ini. Jadi tunggu apalagi, yuk pakai Virtual Restaurant.\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3. Help");
-
-    $result = $bot->replyMessage($event['replyToken'], $greetings);
-    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-    return $response
-        ->withHeader('Content-Type', 'application/json')
-        ->withStatus($result->getHTTPStatus());
+    $response->getBody()->write("Halo selamat datang di Virtual Restaurant, saya adalah aplikasi belanja online makanan langsung ke tempat tinggal anda. Gunakan saya sebaik mungkin ya.\n\nJangan lupa setiap hari senin dan rabu akan ada promo, lho! Dan akan ada hadiah menarik bagi kamu yang paling banyak menyebarkan aplikasi ini. Jadi tunggu apalagi, yuk pakai Virtual Restaurant.\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3. Help");
+    return $response;
 });
  
 // buat route untuk webhook
@@ -71,15 +63,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                 $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
                         $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Halo semuanya, terima kasih sudah menambahkan saya ke ruangan ini.");
-
-                        $result = $bot->replyMessage($event['replyToken'], $greetings);
-                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                        return $response
-                            ->withHeader('Content-Type', 'application/json')
-                            ->withStatus($result->getHTTPStatus());
-
-                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, saya adalah aplikasi belanja online makanan langsung ke tempat tinggal anda. Gunakan saya sebaik mungkin ya.\n\nJangan lupa setiap hari senin dan rabu akan ada promo, lho! Dan akan ada hadiah menarik bagi kamu yang paling banyak menyebarkan aplikasi ini. Jadi tunggu apalagi, yuk pakai Virtual Restaurant.\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3. Help");
+                        $greetings = new TextMessageBuilder("Halo semuanya, terima kasih sudah menambahkan saya ke ruangan ini. Saya adalah aplikasi belanja online makanan langsung ke tempat tinggal anda. Gunakan saya sebaik mungkin ya.\n\nJangan lupa setiap hari senin dan rabu akan ada promo, lho! Dan akan ada hadiah menarik bagi kamu yang paling banyak menyebarkan aplikasi ini. Jadi tunggu apalagi, yuk pakai Virtual Restaurant.\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3. Help");
 
                         $result = $bot->replyMessage($event['replyToken'], $greetings);
                         $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
