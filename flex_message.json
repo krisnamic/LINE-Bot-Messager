@@ -26,14 +26,14 @@
           "type": "text",
           "text": "Lapar? pesan makananmu sekarang!",
           "size": "sm",
-          "color": "#00e639",
+          "color": "#1ddd4d",
           "weight": "bold"
         },
         {
           "type": "text",
           "text": "oleh: Michael KC",
           "size": "sm",
-          "style": "primary"
+          "color": "#1ddd4d"
         },
         {
           "type": "text",
@@ -49,16 +49,6 @@
       "layout": "horizontal",
       "spacing": "sm",
       "contents": [
-        {
-            "type": "button",
-            "style": "secondary",
-            "action": {
-              "type": "postback",
-              "label": "Trial",
-              "displayText": "Trial",
-              "data": "Trial"
-            }
-          },
           {
             "type": "button",
             "style": "primary",
