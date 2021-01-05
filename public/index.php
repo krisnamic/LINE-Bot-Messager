@@ -93,6 +93,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                 //         ->withHeader('Content-Type', 'application/json')
                 //         ->withStatus($result->getHTTPStatus());
                 // } 
+
                 //group room
                 if(
                 $event['source']['type'] == 'group' or
@@ -119,7 +120,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
                         $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Ngakak " . $profile['displayName']);
+                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName']);
                 
                         $result = $bot->replyMessage($event['replyToken'], $greetings);
                         $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
@@ -128,7 +129,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                             ->withStatus($result->getHTTPStatus());  
                     }            
                 } 
-                elseif (strtolower($event['message']['text']) == 'flex message') {
+                elseif (strtolower($event['message']['text']) == 'Buka menu') {
  
                     $flexTemplate = file_get_contents("../flex_message.json"); // template flex message
                     $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
@@ -141,6 +142,20 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                             ]
                         ],
                     ]);
+
+                }
+                elseif (strtolower($event['message']['text']) == 'Pesan Sekarang') {
+ 
+                    $userId = $event['source']['userId'];
+                        $getprofile = $bot->getProfile($userId);
+                        $profile = $getprofile->getJSONDecodedBody();
+                        $greetings = new TextMessageBuilder("https://submissionpemesananmakanan.herokuapp.com/");
+                
+                        $result = $bot->replyMessage($event['replyToken'], $greetings);
+                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                        return $response
+                            ->withHeader('Content-Type', 'application/json')
+                            ->withStatus($result->getHTTPStatus());  
 
                 }
                 else {
