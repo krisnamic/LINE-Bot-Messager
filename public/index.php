@@ -84,10 +84,28 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
 
                     } 
                     elseif (strtolower($event['message']['text']) == 'pesan sekarang') {
-                        $result = $bot->replyMessage($event['replyToken'], "Silakan klik link di bawah ini:\n\nhttps://liff.line.me/1655338109-RpZmDMGN");
+                        $userId = $event['source']['userId'];
+                        $getprofile = $bot->getProfile($userId);
+                        $profile = $getprofile->getJSONDecodedBody();
+                        $greetings = new TextMessageBuilder("Silakan klik link di bawah ini:\n\nhttps://liff.line.me/1655338109-RpZmDMGN");
+
+                        $result = $bot->replyMessage($event['replyToken'], $greetings);
+                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                        return $response
+                            ->withHeader('Content-Type', 'application/json')
+                            ->withStatus($result->getHTTPStatus());
                     } 
                     elseif (strtolower($event['message']['text']) == 'help') {
-                        $result = $bot->replyMessage($event['replyToken'], "Halo selamat datang di Virtual Restaurant, " . $profile['displayName'] . "\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3.Help");
+                        $userId = $event['source']['userId'];
+                        $getprofile = $bot->getProfile($userId);
+                        $profile = $getprofile->getJSONDecodedBody();
+                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName'] . "\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3.Help");
+
+                        $result = $bot->replyMessage($event['replyToken'], $greetings);
+                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                        return $response
+                            ->withHeader('Content-Type', 'application/json')
+                            ->withStatus($result->getHTTPStatus());
                     } 
                     else {
                         // send same message as reply to user
