@@ -61,115 +61,83 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
         {
             if ($event['type'] == 'message')
             {
-                // if($event['message']['type'] == 'text')
-                // {
-                //     // send same message as reply to user
-                //     $result = $bot->replyText($event['replyToken'], $event['message']['text']);
-    
-    
-                //     // or we can use replyMessage() instead to send reply message
-                //     // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
-                //     // $result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
-    
-    
-                //     $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                //     return $response
-                //         ->withHeader('Content-Type', 'application/json')
-                //         ->withStatus($result->getHTTPStatus());
-                // }
-                // //Content api
-                // elseif (
-                //     $event['message']['type'] == 'image' or
-                //     $event['message']['type'] == 'video' or
-                //     $event['message']['type'] == 'audio' or
-                //     $event['message']['type'] == 'file'
-                // ) {
-                //     $contentURL = " https://cobabikinlinebot.herokuapp.com/public/content/" . $event['message']['id'];
-                //     $contentType = ucfirst($event['message']['type']);
-                //     $result = $bot->replyText($event['replyToken'],
-                //         $contentType . " yang Anda kirim bisa diakses dari link:\n " . $contentURL);
-                //     $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                //     return $response
-                //         ->withHeader('Content-Type', 'application/json')
-                //         ->withStatus($result->getHTTPStatus());
-                // } 
+                //reply message
+                if ($event['message']['type'] == 'text') {
+                    if (strtolower($event['message']['text']) == 'user id') {
 
-                //group room
-                if(
-                $event['source']['type'] == 'group' or
-                $event['source']['type'] == 'room'
-                ){
-                    //message from group / room
-                    if (strtolower($event['message']['text']) == 'flex message') {
- 
+                        $result = $bot->replyText($event['replyToken'], $event['source']['userId']);
+
+                    } elseif (strtolower($event['message']['text']) == 'flex message') {
+
                         $flexTemplate = file_get_contents("../flex_message.json"); // template flex message
                         $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
                             'replyToken' => $event['replyToken'],
                             'messages'   => [
                                 [
                                     'type'     => 'flex',
-                                    'altText'  => 'Lapar? pesan makananmu sekarang!',
+                                    'altText'  => 'Test Flex Message',
                                     'contents' => json_decode($flexTemplate)
                                 ]
                             ],
                         ]);
-    
+
+                    } else {
+                        // send same message as reply to user
+                        $result = $bot->replyText($event['replyToken'], $event['message']['text']);
                     }
-                    else if ($event['source']['userId']) {
+
+
+                    // or we can use replyMessage() instead to send reply message
+                    // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
+                    // $result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
+
+
+                    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus($result->getHTTPStatus());
+                } //content api
+                elseif (
+                    $event['message']['type'] == 'image' or
+                    $event['message']['type'] == 'video' or
+                    $event['message']['type'] == 'audio' or
+                    $event['message']['type'] == 'file'
+                ) {
+                    $contentURL = " https://example.herokuapp.com/public/content/" . $event['message']['id'];
+                    $contentType = ucfirst($event['message']['type']);
+                    $result = $bot->replyText($event['replyToken'],
+                        $contentType . " yang Anda kirim bisa diakses dari link:\n " . $contentURL);
+
+                    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus($result->getHTTPStatus());
+                } //group room
+                elseif (
+                    $event['source']['type'] == 'group' or
+                    $event['source']['type'] == 'room'
+                ) {
+                    //message from group / room
+                    if ($event['source']['userId']) {
 
                         $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
                         $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName']);
-                
+                        $greetings = new TextMessageBuilder("Halo, " . $profile['displayName']);
+
                         $result = $bot->replyMessage($event['replyToken'], $greetings);
                         $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
                         return $response
                             ->withHeader('Content-Type', 'application/json')
-                            ->withStatus($result->getHTTPStatus());  
-                    }            
-                } 
-                elseif (strtolower($event['message']['text']) == 'buka menu') {
- 
-                    $flexTemplate = file_get_contents("../flex_message.json"); // template flex message
-                    $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
-                        'replyToken' => $event['replyToken'],
-                        'messages'   => [
-                            [
-                                'type'     => 'flex',
-                                'altText'  => 'Lapar? pesan makananmu sekarang!',
-                                'contents' => json_decode($flexTemplate)
-                            ]
-                        ],
-                    ]);
-
-                }
-                elseif (strtolower($event['message']['text']) == 'pesan sekarang') {
- 
-                    $userId = $event['source']['userId'];
-                        $getprofile = $bot->getProfile($userId);
-                        $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("https://submissionpemesananmakanan.herokuapp.com/");
-                
-                        $result = $bot->replyMessage($event['replyToken'], $greetings);
-                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                        return $response
-                            ->withHeader('Content-Type', 'application/json')
-                            ->withStatus($result->getHTTPStatus());  
-
-                }
-                else {
+                            ->withStatus($result->getHTTPStatus());
+                    }
+                } else {
                     //message from single user
-                    $userId = $event['source']['userId'];
-                        $getprofile = $bot->getProfile($userId);
-                        $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName']);
-                
-                        $result = $bot->replyMessage($event['replyToken'], $greetings);
-                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                        return $response
-                            ->withHeader('Content-Type', 'application/json')
-                            ->withStatus($result->getHTTPStatus());  
+                    $result = $bot->replyText($event['replyToken'], $event['message']['text']);
+                    $response->getBody()->write((string)$result->getJSONDecodedBody());
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus($result->getHTTPStatus());
                 }
             }
         }
