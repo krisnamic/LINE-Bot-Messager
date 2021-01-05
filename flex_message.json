@@ -51,10 +51,13 @@
       "contents": [
           {
             "type": "button",
-            "text": "https://submissionpemesananmakanan.herokuapp.com/",
-            "size": "sm",
-            "wrap": true,
-            "margin": "lg"
+            "style": "primary",
+            "action": {
+              "type": "postback",
+              "label": "Pesan Sekarang",
+              "displayText": "https://submissionpemesananmakanan.herokuapp.com/",
+              "data": "Pesan Sekarang"
+            }
           }
       ]
     }
