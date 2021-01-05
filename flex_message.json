@@ -6,14 +6,14 @@
       "contents": [
         {
           "type": "text",
-          "text": "Dicoding Academy",
+          "text": "Virtual Restaurant",
           "weight": "bold"
         }
       ]
     },
     "hero": {
       "type": "image",
-      "url": "https://www.dicoding.com/images/small/academy/menjadi_android_developer_expert_logo_041217105708.png",
+      "url": "https://www.hokben.co.id/img_assets/menu/246_.jpg",
       "size": "full",
       "aspectRatio": "4:3",
       "aspectMode": "cover"
@@ -24,20 +24,20 @@
       "contents": [
         {
           "type": "text",
-          "text": "Menjadi Android Developer Expert",
+          "text": "Lapar? pesan makananmu sekarang!",
           "size": "sm",
-          "color": "#c9302c",
+          "color": "#00e639",
           "weight": "bold"
         },
         {
           "type": "text",
-          "text": "oleh: Dicoding Indonesia",
+          "text": "oleh: Michael KC",
           "size": "sm",
-          "color": "#c9302c"
+          "color": "#00e639"
         },
         {
           "type": "text",
-          "text": "Jadilah expert di dunia pemrograman Android. Materi disusun oleh Dicoding sebagai Google Authorized Training Partner.",
+          "text": "Caranya mudah kok tinggal klik tombol pesan sekarang dibawah ini!",
           "size": "sm",
           "wrap": true,
           "margin": "lg"
@@ -51,23 +51,14 @@
       "contents": [
         {
           "type": "button",
-          "style": "secondary",
-          "action": {
-            "type": "postback",
-            "label": "Trial",
-            "displayText": "Trial",
-            "data": "Trial"
-          }
-        },
-        {
-          "type": "button",
           "style": "primary",
           "action": {
             "type": "postback",
-            "label": "Daftar",
-            "displayText": "Daftar",
-            "data": "Daftar"
-          }
+            "label": "Pesan Sekarang",
+            "displayText": "Pesan Sekarang",
+            "data": "Pesan Sekarang"
+          },
+          "url": "https://liff.line.me/1655338109-RpZmDMGN"
         }
       ]
     }
