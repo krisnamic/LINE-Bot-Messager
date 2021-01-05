@@ -104,7 +104,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
                         $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Anjing lu " . $profile['displayName']);
+                        $greetings = new TextMessageBuilder("Ngakak " . $profile['displayName']);
                 
                         $result = $bot->replyMessage($event['replyToken'], $greetings);
                         $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
