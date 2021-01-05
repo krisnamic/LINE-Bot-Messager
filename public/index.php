@@ -61,40 +61,40 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
         {
             if ($event['type'] == 'message')
             {
-                if($event['message']['type'] == 'text')
-                {
-                    // send same message as reply to user
-                    $result = $bot->replyText($event['replyToken'], $event['message']['text']);
+                // if($event['message']['type'] == 'text')
+                // {
+                //     // send same message as reply to user
+                //     $result = $bot->replyText($event['replyToken'], $event['message']['text']);
     
     
-                    // or we can use replyMessage() instead to send reply message
-                    // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
-                    // $result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
+                //     // or we can use replyMessage() instead to send reply message
+                //     // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
+                //     // $result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
     
     
-                    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                    return $response
-                        ->withHeader('Content-Type', 'application/json')
-                        ->withStatus($result->getHTTPStatus());
-                }
-                //Content api
-                elseif (
-                    $event['message']['type'] == 'image' or
-                    $event['message']['type'] == 'video' or
-                    $event['message']['type'] == 'audio' or
-                    $event['message']['type'] == 'file'
-                ) {
-                    $contentURL = " https://cobabikinlinebot.herokuapp.com/public/content/" . $event['message']['id'];
-                    $contentType = ucfirst($event['message']['type']);
-                    $result = $bot->replyText($event['replyToken'],
-                        $contentType . " yang Anda kirim bisa diakses dari link:\n " . $contentURL);
-                    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                    return $response
-                        ->withHeader('Content-Type', 'application/json')
-                        ->withStatus($result->getHTTPStatus());
-                } 
+                //     $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                //     return $response
+                //         ->withHeader('Content-Type', 'application/json')
+                //         ->withStatus($result->getHTTPStatus());
+                // }
+                // //Content api
+                // elseif (
+                //     $event['message']['type'] == 'image' or
+                //     $event['message']['type'] == 'video' or
+                //     $event['message']['type'] == 'audio' or
+                //     $event['message']['type'] == 'file'
+                // ) {
+                //     $contentURL = " https://cobabikinlinebot.herokuapp.com/public/content/" . $event['message']['id'];
+                //     $contentType = ucfirst($event['message']['type']);
+                //     $result = $bot->replyText($event['replyToken'],
+                //         $contentType . " yang Anda kirim bisa diakses dari link:\n " . $contentURL);
+                //     $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                //     return $response
+                //         ->withHeader('Content-Type', 'application/json')
+                //         ->withStatus($result->getHTTPStatus());
+                // } 
                 //group room
-                elseif(
+                if(
                 $event['source']['type'] == 'group' or
                 $event['source']['type'] == 'room'
                 ){
@@ -112,7 +112,23 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                             ->withHeader('Content-Type', 'application/json')
                             ->withStatus($result->getHTTPStatus());  
                     }            
-                } else {
+                } 
+                elseif (strtolower($event['message']['text']) == 'flex message') {
+ 
+                    $flexTemplate = file_get_contents("../flex_message.json"); // template flex message
+                    $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
+                        'replyToken' => $event['replyToken'],
+                        'messages'   => [
+                            [
+                                'type'     => 'flex',
+                                'altText'  => 'Test Flex Message',
+                                'contents' => json_decode($flexTemplate)
+                            ]
+                        ],
+                    ]);
+
+                }
+                else {
                     //message from single user
                     $result = $bot->replyText($event['replyToken'], $event['message']['text']);
                     $response->getBody()->write((string)$result->getJSONDecodedBody());
