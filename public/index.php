@@ -116,7 +116,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
     
                     }
                     else if ($event['source']['userId']) {
-    
+
                         $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
                         $profile = $getprofile->getJSONDecodedBody();
@@ -129,7 +129,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                             ->withStatus($result->getHTTPStatus());  
                     }            
                 } 
-                elseif (strtolower($event['message']['text']) == 'Buka menu') {
+                elseif (strtolower($event['message']['text']) == 'buka menu') {
  
                     $flexTemplate = file_get_contents("../flex_message.json"); // template flex message
                     $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
@@ -144,7 +144,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                     ]);
 
                 }
-                elseif (strtolower($event['message']['text']) == 'Pesan Sekarang') {
+                elseif (strtolower($event['message']['text']) == 'pesan sekarang') {
  
                     $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
@@ -160,11 +160,16 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                 }
                 else {
                     //message from single user
-                    $result = $bot->replyText($event['replyToken'], $event['message']['text']);
-                    $response->getBody()->write((string)$result->getJSONDecodedBody());
-                    return $response
-                        ->withHeader('Content-Type', 'application/json')
-                        ->withStatus($result->getHTTPStatus());
+                    $userId = $event['source']['userId'];
+                        $getprofile = $bot->getProfile($userId);
+                        $profile = $getprofile->getJSONDecodedBody();
+                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName']);
+                
+                        $result = $bot->replyMessage($event['replyToken'], $greetings);
+                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                        return $response
+                            ->withHeader('Content-Type', 'application/json')
+                            ->withStatus($result->getHTTPStatus());  
                 }
             }
         }
