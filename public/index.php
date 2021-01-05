@@ -107,7 +107,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                             'messages'   => [
                                 [
                                     'type'     => 'flex',
-                                    'altText'  => 'Test Flex Message',
+                                    'altText'  => 'Lapar? pesan makananmu sekarang!',
                                     'contents' => json_decode($flexTemplate)
                                 ]
                             ],
@@ -136,7 +136,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         'messages'   => [
                             [
                                 'type'     => 'flex',
-                                'altText'  => 'Test Flex Message',
+                                'altText'  => 'Lapar? pesan makananmu sekarang!',
                                 'contents' => json_decode($flexTemplate)
                             ]
                         ],

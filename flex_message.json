@@ -50,16 +50,25 @@
       "spacing": "sm",
       "contents": [
         {
-          "type": "button",
-          "style": "primary",
-          "action": {
-            "type": "postback",
-            "label": "Pesan Sekarang",
-            "displayText": "Pesan Sekarang",
-            "data": "Pesan Sekarang"
+            "type": "button",
+            "style": "secondary",
+            "action": {
+              "type": "postback",
+              "label": "Trial",
+              "displayText": "Trial",
+              "data": "Trial"
+            }
           },
-          "url": "https://liff.line.me/1655338109-RpZmDMGN"
-        }
+          {
+            "type": "button",
+            "style": "primary",
+            "action": {
+              "type": "postback",
+              "label": "Pesan Sekarang",
+              "displayText": "Pesan Sekarang",
+              "data": "Pesan Sekarang"
+            }
+          }
       ]
     }
   }
