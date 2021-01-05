@@ -33,7 +33,7 @@
           "type": "text",
           "text": "oleh: Michael KC",
           "size": "sm",
-          "color": "#00e639"
+          "style": "primary"
         },
         {
           "type": "text",
