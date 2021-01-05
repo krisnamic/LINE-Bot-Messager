@@ -110,16 +110,17 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
                         return $response
                             ->withHeader('Content-Type', 'application/json')
-                            ->withStatus($result->getHTTPStatus());              
-                    } else {
-                        //message from single user
-                        $result = $bot->replyText($event['replyToken'], $event['message']['text']);
-                        $response->getBody()->write((string)$result->getJSONDecodedBody());
-                        return $response
-                            ->withHeader('Content-Type', 'application/json')
-                            ->withStatus($result->getHTTPStatus());
-                    }
+                            ->withStatus($result->getHTTPStatus());  
+                    }            
+                } else {
+                    //message from single user
+                    $result = $bot->replyText($event['replyToken'], $event['message']['text']);
+                    $response->getBody()->write((string)$result->getJSONDecodedBody());
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus($result->getHTTPStatus());
                 }
+            }
         }
         return $response->withStatus(200, 'for Webhook!'); //buat ngasih response 200 ke pas verify webhook
     }
