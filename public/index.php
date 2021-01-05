@@ -77,6 +77,23 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         ->withHeader('Content-Type', 'application/json')
                         ->withStatus($result->getHTTPStatus());
                 }
+                //Content api
+                elseif (
+                    $event['message']['type'] == 'image' or
+                    $event['message']['type'] == 'video' or
+                    $event['message']['type'] == 'audio' or
+                    $event['message']['type'] == 'file'
+                ) {
+                    $contentURL = " https://example.herokuapp.com/public/content/" . $event['message']['id'];
+                    $contentType = ucfirst($event['message']['type']);
+                    $result = $bot->replyText($event['replyToken'],
+                        $contentType . " yang Anda kirim bisa diakses dari link:\n " . $contentURL);
+                    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus($result->getHTTPStatus());
+                } 
+
             }
         }
         return $response->withStatus(200, 'for Webhook!'); //buat ngasih response 200 ke pas verify webhook
