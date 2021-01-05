@@ -67,7 +67,8 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
 
                         $result = $bot->replyText($event['replyToken'], $event['source']['userId']);
 
-                    } elseif (strtolower($event['message']['text']) == 'buka menu') {
+                    } 
+                    elseif (strtolower($event['message']['text']) == 'buka menu') {
 
                         $flexTemplate = file_get_contents("../flex_message.json"); // template flex message
                         $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
@@ -81,12 +82,16 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                             ],
                         ]);
 
-                    } else {
+                    } 
+                    elseif (strtolower($event['message']['text']) == 'buka menu') {
+                        $result = $bot->replyMessage($event['replyToken'], "Silakan lik link di bawah ini:\n\nhttps://liff.line.me/1655338109-RpZmDMGN");
+                    } 
+                    else {
                         // send same message as reply to user
                         $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
                         $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName'] . "\nCara menggunakannya");
+                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName'] . "\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang");
 
                         $result = $bot->replyMessage($event['replyToken'], $greetings);
                         $response->getBody()->write(json_encode($result->getJSONDecodedBody()));

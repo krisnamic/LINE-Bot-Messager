@@ -55,7 +55,7 @@
             "action": {
               "type": "postback",
               "label": "Pesan Sekarang",
-              "displayText": "Silakan lik link di bawah ini:\n https://liff.line.me/1655338109-RpZmDMGN",
+              "displayText": "Silakan lik link di bawah ini:\n\nhttps://liff.line.me/1655338109-RpZmDMGN",
               "data": "Pesan Sekarang"
             }
           }
