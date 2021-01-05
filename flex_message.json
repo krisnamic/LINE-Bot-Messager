@@ -56,7 +56,8 @@
               "type": "postback",
               "label": "Pesan Sekarang",
               "displayText": "Pesan Sekarang",
-              "data": "Pesan Sekarang"
+              "data": "Pesan Sekarang",
+              "url": "https://submissionpemesananmakanan.herokuapp.com/"
             }
           }
       ]
