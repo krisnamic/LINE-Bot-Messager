@@ -83,16 +83,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
 
                     } else {
                         // send same message as reply to user
-                        userId = $event['source']['userId'];
-                        $getprofile = $bot->getProfile($userId);
-                        $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName']);
-
-                        $result = $bot->replyMessage($event['replyToken'], $greetings);
-                        $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
-                        return $response
-                            ->withHeader('Content-Type', 'application/json')
-                            ->withStatus($result->getHTTPStatus());
+                        $result = $bot->replyText($event['replyToken'], "haloooooooo");
                     }
 
 
