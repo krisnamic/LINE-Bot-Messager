@@ -29,8 +29,16 @@ $app = AppFactory::create();
 $app->setBasePath("/public");
  
 $app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Hello World!");
-    return $response;
+    $userId = $event['source']['userId'];
+    $getprofile = $bot->getProfile($userId);
+    $profile = $getprofile->getJSONDecodedBody();
+    $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, saya adalah aplikasi belanja online makanan langsung ke tempat tinggal anda. Gunakan saya sebaik mungkin ya.\n\nJangan lupa setiap hari senin dan rabu akan ada promo, lho! Dan akan ada hadiah menarik bagi kamu yang paling banyak menyebarkan aplikasi ini. Jadi tunggu apalagi, yuk pakai Virtual Restaurant.\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3. Help");
+
+    $result = $bot->replyMessage($event['replyToken'], $greetings);
+    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+    return $response
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($result->getHTTPStatus());
 });
  
 // buat route untuk webhook
@@ -99,7 +107,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         $userId = $event['source']['userId'];
                         $getprofile = $bot->getProfile($userId);
                         $profile = $getprofile->getJSONDecodedBody();
-                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName'] . "\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3.Help");
+                        $greetings = new TextMessageBuilder("Halo selamat datang di Virtual Restaurant, " . $profile['displayName'] . "\n\nKetik keyword di bawah ini untuk menggunakan aplikasi Virtual Restaurant:\n\n1. Buka menu\n2. Pesan sekarang\n3. Help");
 
                         $result = $bot->replyMessage($event['replyToken'], $greetings);
                         $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
@@ -181,18 +189,6 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
     return $response->withStatus(400, 'No event sent!');
 });
 
-$app->get('/pushmessage', function ($req, $response) use ($bot) {
-    // send push message to user
-    $userId = 'U39fddbb54061b4edab80c28ff055858a';
-    $textMessageBuilder = new TextMessageBuilder('Halo, ini pesan push');
-    $result = $bot->pushMessage($userId, $textMessageBuilder);
- 
-    $response->getBody()->write("Pesan push berhasil dikirim!");
-    return $response
-        ->withHeader('Content-Type', 'application/json')
-        ->withStatus($result->getHTTPStatus());
-});
-
 $app->get('/multicast', function($req, $response) use ($bot)
 {
     // list of users
@@ -202,7 +198,7 @@ $app->get('/multicast', function($req, $response) use ($bot)
         'U79338fe62b08a48895d6b2dbcf6aba5e'];
  
     // send multicast message to user
-    $textMessageBuilder = new TextMessageBuilder('Jangan rindu. Karena rindu itu berat, biar aku saja.');
+    $textMessageBuilder = new TextMessageBuilder('Halo, hari ini sedang ada promo lho. Yuk buruan sebelum kehabisan!');
     $result = $bot->multicast($userList, $textMessageBuilder);
  
  
