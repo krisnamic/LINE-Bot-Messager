@@ -55,7 +55,7 @@
             "action": {
               "type": "postback",
               "label": "Pesan Sekarang",
-              "displayText": "https://submissionpemesananmakanan.herokuapp.com/",
+              "displayText": "https://liff.line.me/1655338109-RpZmDMGN",
               "data": "Pesan Sekarang"
             }
           }
