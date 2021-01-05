@@ -105,11 +105,11 @@ $app->get('/multicast', function($req, $response) use ($bot)
         'U79338fe62b08a48895d6b2dbcf6aba5e'];
  
     // send multicast message to user
-    $textMessageBuilder = new TextMessageBuilder('Halo, ini pesan multicast');
+    $textMessageBuilder = new TextMessageBuilder('Jangan rindu. Karena rindu itu berat, biar aku saja.');
     $result = $bot->multicast($userList, $textMessageBuilder);
  
  
-    $response->getBody()->write("Jangan rindu. Karena rindu itu berat, biar aku saja.");
+    $response->getBody()->write("Pesan multicast berhasil dikirim!");
     return $response
         ->withHeader('Content-Type', 'application/json')
         ->withStatus($result->getHTTPStatus());
