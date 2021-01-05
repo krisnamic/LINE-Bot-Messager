@@ -96,5 +96,26 @@ $app->get('/pushmessage', function ($req, $response) use ($bot) {
         ->withStatus($result->getHTTPStatus());
 });
 
+$app->get('/multicast', function($req, $response) use ($bot)
+{
+    // list of users
+    $userList = [
+        'U39fddbb54061b4edab80c28ff055858a',
+        'U4eca900f06239bdc9a117c0e37cc0347',
+        'U79338fe62b08a48895d6b2dbcf6aba5e'];
+ 
+    // send multicast message to user
+    $textMessageBuilder = new TextMessageBuilder('Halo, ini pesan multicast');
+    $result = $bot->multicast($userList, $textMessageBuilder);
+ 
+ 
+    $response->getBody()->write("Halooooo ada oranggggg????");
+    return $response
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($result->getHTTPStatus());
+});
+
+
+
 $app->run();
  
